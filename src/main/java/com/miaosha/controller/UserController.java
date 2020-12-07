@@ -6,7 +6,7 @@ import com.miaosha.controller.viewobject.UserVO;
 
 import com.miaosha.error.BusinessException;
 import com.miaosha.error.EmBusinessError;
-import com.miaosha.response.CommReturnType;
+import com.miaosha.response.CommonReturnType;
 import com.miaosha.service.UserService;
 import com.miaosha.service.model.UserModel;
 import org.springframework.beans.BeanUtils;
@@ -36,8 +36,8 @@ public class UserController extends BaseController {
     //用户登录接口
     @RequestMapping(value = "/login", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
-    public CommReturnType login(@RequestParam(name = "telphone") String telphone,
-                                @RequestParam(name = "password") String password) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
+    public CommonReturnType login(@RequestParam(name = "telphone") String telphone,
+                                  @RequestParam(name = "password") String password) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
         //入参校验
         if (StringUtils.isEmpty(telphone) || StringUtils.isEmpty(password)) {
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
@@ -48,19 +48,19 @@ public class UserController extends BaseController {
         //将登录凭证加入到用户登录成功的session内
         this.httpServletRequest.getSession().setAttribute("IS_LOGIN",true);
         this.httpServletRequest.getSession().setAttribute("LOGIN_USER",userModel);
-        return CommReturnType.create(null);
+        return CommonReturnType.create(null);
     }
 
     //用户注册接口
     @Transactional
     @RequestMapping(value = "/register", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
-    public CommReturnType register(@RequestParam(name = "telphone") String telphone,
-                                   @RequestParam(name = "otpCode") String otpCode,
-                                   @RequestParam(name = "name") String name,
-                                   @RequestParam(name = "gender") Integer gender,
-                                   @RequestParam(name = "age") Integer age,
-                                   @RequestParam(name = "password") String password) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
+    public CommonReturnType register(@RequestParam(name = "telphone") String telphone,
+                                     @RequestParam(name = "otpCode") String otpCode,
+                                     @RequestParam(name = "name") String name,
+                                     @RequestParam(name = "gender") Integer gender,
+                                     @RequestParam(name = "age") Integer age,
+                                     @RequestParam(name = "password") String password) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
         System.out.println("进入方法了");
         //验证手机号和对应的otpcode相符合
         String inSessionOtpCode = (String) this.httpServletRequest.getSession().getAttribute(telphone);
@@ -78,7 +78,7 @@ public class UserController extends BaseController {
         userModel.setEncrptPassword(this.EncoderByMd5(password));
         userService.register(userModel);
         System.out.println("后台显示注册成功");
-        return CommReturnType.create(null);
+        return CommonReturnType.create(null);
 
     }
 
@@ -94,7 +94,7 @@ public class UserController extends BaseController {
     //用户获取otp短信接口
     @RequestMapping(value = "/getotp", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
-    public CommReturnType getOtp(@RequestParam(name = "telphone") String telphone) {
+    public CommonReturnType getOtp(@RequestParam(name = "telphone") String telphone) {
         //需要按照一定的规则生成OTP验证码
         Random random = new Random();
         int randomInt = random.nextInt(99999);
@@ -107,12 +107,12 @@ public class UserController extends BaseController {
         //将OTP验证码通过短信通道发送给用户，（省略）
         System.out.println("telphone = " + telphone + " & otpCode = " + otpCode);
 
-        return CommReturnType.create(null);
+        return CommonReturnType.create(null);
     }
 
     @RequestMapping("/get")
     @ResponseBody
-    public CommReturnType getUser(@RequestParam(name = "id") Integer id) throws BusinessException {//访问方式 http://localhost:8080/user/get?id=1
+    public CommonReturnType getUser(@RequestParam(name = "id") Integer id) throws BusinessException {//访问方式 http://localhost:8080/user/get?id=1
         //调用service服务获取对应id得用户对象并返回给前端
         UserModel userModel = userService.getUserById(id);
 
@@ -126,7 +126,7 @@ public class UserController extends BaseController {
         UserVO userVO = convertFromModel(userModel);
 
         //返回通用对象
-        return CommReturnType.create(userVO);
+        return CommonReturnType.create(userVO);
     }
 
     private UserVO convertFromModel(UserModel userModel) {

@@ -2,7 +2,7 @@ package com.miaosha.controller;
 
 import com.miaosha.error.BusinessException;
 import com.miaosha.error.EmBusinessError;
-import com.miaosha.response.CommReturnType;
+import com.miaosha.response.CommonReturnType;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,7 +29,7 @@ public class BaseController {
             responseData.put("errCode", EmBusinessError.UNKNOWN_ERROR.getErrCode());
             responseData.put("errMsg",EmBusinessError.UNKNOWN_ERROR.getErrMsg());
         }
-        return CommReturnType.create(responseData,"fail");
+        return CommonReturnType.create(responseData,"fail");
 
 
     }

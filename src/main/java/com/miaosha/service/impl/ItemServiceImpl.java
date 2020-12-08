@@ -31,6 +31,12 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
+    public void increaseSales(Integer itemId, Integer amount) throws BusinessException {
+        itemDOMapper.increaseSales(itemId, amount);
+    }
+
+    @Override
+    @Transactional
     public ItemModel createItem(ItemModel itemModel) throws BusinessException {
         //校验入参
         ValidationResult result = validator.validate(itemModel);

@@ -36,4 +36,7 @@ public class ItemModel {
     //商品描述图片的url
     @NotBlank(message = "商品图片信息不能为空")
     private String imgUrl;
+
+    //使用聚合模型
+    private PromoModel promoModel;//如果promoModel不为空，则表示其拥有还未结束的秒杀活动
 }

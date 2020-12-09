@@ -7,7 +7,9 @@ import com.miaosha.dao.dataobject.ItemStockDO;
 import com.miaosha.error.BusinessException;
 import com.miaosha.error.EmBusinessError;
 import com.miaosha.service.ItemService;
+import com.miaosha.service.PromoService;
 import com.miaosha.service.model.ItemModel;
+import com.miaosha.service.model.PromoModel;
 import com.miaosha.validator.ValidationResult;
 import com.miaosha.validator.ValidatorImpl;
 import org.springframework.beans.BeanUtils;
@@ -27,7 +29,8 @@ public class ItemServiceImpl implements ItemService {
     private ItemDOMapper itemDOMapper;
     @Autowired
     private ItemStockDOMapper itemStockDOMapper;
-
+    @Autowired
+    private PromoService promoService;
 
     @Override
     @Transactional
@@ -101,6 +104,12 @@ public class ItemServiceImpl implements ItemService {
         ItemStockDO itemStockDO = itemStockDOMapper.selectByItemId(itemDO.getId());
         //将dataobject -->model
         ItemModel itemModel = convertModelFromDataObject(itemDO, itemStockDO);
+
+        //获取活动商品信息
+        PromoModel promoModel = promoService.getPromoByItemId(itemModel.getId());
+        if(promoModel !=null&& promoModel.getStatus().intValue() !=3){
+            itemModel.setPromoModel(promoModel);
+        }
 
         return itemModel;
     }

@@ -110,7 +110,6 @@ public class ItemServiceImpl implements ItemService {
         if(promoModel !=null&& promoModel.getStatus().intValue() !=3){
             itemModel.setPromoModel(promoModel);
         }
-
         return itemModel;
     }
 

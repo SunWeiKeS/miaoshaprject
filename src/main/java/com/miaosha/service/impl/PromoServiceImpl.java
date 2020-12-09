@@ -21,9 +21,12 @@ public class PromoServiceImpl implements PromoService {
 
         //获取对应商品的秒杀信息
         PromoDO promoDO = promoDOMapper.selectByItemId(itemId);
-
         //dataobject -->model
         PromoModel promoModel = convertFromDataObject(promoDO);
+
+        if(promoModel ==null){
+            return null;
+        }
 
         //判断当前时间秒杀活动是否即将开始或正在进行
         if(promoModel.getStartDate().isAfterNow()){//开始时间在当前之后
@@ -33,12 +36,8 @@ public class PromoServiceImpl implements PromoService {
         }else {
             promoModel.setStatus(2);
         }
-
         return promoModel;
     }
-
-
-
 
     private PromoModel convertFromDataObject(PromoDO promoDO){
         if(promoDO == null) {

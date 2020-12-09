@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Getter
 @Setter

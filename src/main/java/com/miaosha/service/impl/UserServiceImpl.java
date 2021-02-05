@@ -63,6 +63,7 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,result.getErrMsg());
         }
 
+        //实现model -》dataobject方法
         UserDO userDO =convertFromModel(userModel);
         try{
             userDOMapper.insertSelective(userDO);
